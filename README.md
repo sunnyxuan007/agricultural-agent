@@ -5,6 +5,7 @@
 项目以自然语言对话为核心，帮助农民打破信息壁垒，让每一个农户都能拥有“懂农业、懂金融、懂市场”的AI助手。
 
 ## 📁 项目结构
+```
 农信智盾/
 ├── frontend/ # 微信小程序前端（完整源码）
 │ ├── pages/ # 页面目录
@@ -29,6 +30,7 @@
 │ └── server.py # FastAPI 服务入口
 ├── scripts/load_knowledge.py # 知识库初始化脚本
 └── requirements.txt # Python依赖
+```
 
 
 ## 📁 配置并运行小程序
