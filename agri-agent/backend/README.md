@@ -37,7 +37,7 @@ curl -X POST http://localhost:8000/chat -H "Content-Type: application/json" -d '
 \`\`\`
 
 ## 项目结构
-...
+```
 nongxin-agent/
 ├── config/
 │   └── settings.yaml          # 配置文件（模型、API密钥等）
@@ -63,3 +63,4 @@ nongxin-agent/
 ├── requirements.txt
 ├── README.md
 └── .gitignore
+```
