@@ -29,7 +29,7 @@
     "ignore": [],
     "include": []
   },
-  "appid": "",
+  "appid": "Enter your wx Appid",
   "editorSetting": {},
   "libVersion": "3.15.2",
   "cloudfunctionRoot": "cloudfunctions/",
