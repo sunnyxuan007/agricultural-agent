@@ -1,0 +1,13 @@
+model:
+  provider: "ollama"
+  name: "qwen:7b"
+  temperature: 0.7
+embedding_model: "nomic-embed-text"
+chroma_persist_dir: "./chroma_db"
+apis:
+  weather:
+    provider: "amap"
+    key: "YOUR_AMAP_KEY"   # 可选，不填则使用模拟数据，由于涉及隐私安全暂时空余
+  price:
+    provider: "juhe"
+    key: ""   # 可选

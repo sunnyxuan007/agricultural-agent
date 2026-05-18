@@ -1,0 +1,218 @@
+<!--pages/chat/chat.wxml-->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left">
+      <view class="logo-text">农信智盾</view>
+    </view>
+    <view class="nav-center">
+      <view class="switch-btn">
+        <view class="switch-item {{activeTab === 'chat' ? 'active' : ''}}" bindtap="switchTab" data-tab="chat">
+          <text>对话</text>
+        </view>
+        <view class="switch-item {{activeTab === 'agent' ? 'active' : ''}}" bindtap="switchTab" data-tab="agent">
+          <text>智能体</text>
+        </view>
+        <view class="switch-slider" style="left: {{activeTab === 'chat' ? '0rpx' : '50%'}};"></view>
+      </view>
+    </view>
+    <view class="nav-right">
+      <view class="nav-icon-btn" bindtap="onCall">
+        <text class="icon">📞</text>
+      </view>
+      <view class="nav-icon-btn" bindtap="onSettings">
+        <text class="icon">️</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 对话模式内容 -->
+  <view class="chat-content" wx:if="{{activeTab === 'chat'}}">
+    <!-- 消息列表区域 -->
+    <scroll-view class="message-list" scroll-y="true" scroll-into-view="msg-{{messages.length-1}}">
+      <view wx:for="{{messages}}" wx:key="index" id="msg-{{index}}">
+        <view class="message-item {{item.type === 'user' ? 'user-msg' : 'ai-msg'}}">
+          <view class="message-bubble">
+            <text class="message-text">{{item.content}}</text>
+          </view>
+          <view class="message-time">{{item.time}}</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 折叠/展开按钮 -->
+    <view class="feature-toggle" bindtap="toggleFeatureCards" wx:if="{{messages.length > 0}}">
+      <text class="toggle-text">{{showFeatureCards ? '收起功能' : '展开功能'}}</text>
+      <text class="toggle-arrow">{{showFeatureCards ? '▼' : '▶'}}</text>
+    </view>
+
+    <!-- 功能卡片区域 - 添加显示控制 -->
+    <view class="feature-cards" wx:if="{{showFeatureCards}}">
+      <view class="feature-card main-card" bindtap="onFeatureTap" data-feature="price-trend">
+        <view class="card-left">
+          <view class="card-icon-wrapper blue">
+            <text class="card-icon">💰</text>
+          </view>
+          <view class="card-info">
+            <text class="card-title">价格趋势预测</text>
+            <text class="card-desc">预测未来农产品价格走势，选择最佳销售时机</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="feature-item" bindtap="onFeatureTap" data-feature="market-info">
+        <view class="feature-item-left">
+          <text class="feature-icon">🏪</text>
+        </view>
+        <view class="feature-item-content">
+          <text class="feature-item-title">搜索优质农资供应商</text>
+          <text class="feature-item-desc">获取最新农资采购渠道和价格信息</text>
+        </view>
+        <view class="feature-item-arrow">›</view>
+      </view>
+
+      <view class="feature-item" bindtap="onFeatureTap" data-feature="planting-plan">
+        <view class="feature-item-left">
+          <text class="feature-icon">🌱</text>
+        </view>
+        <view class="feature-item-content">
+          <text class="feature-item-title">为种植作物规划</text>
+          <text class="feature-item-desc">"根据当地气候推荐最佳种植方案"</text>
+        </view>
+        <view class="feature-item-arrow">›</view>
+      </view>
+
+      <view class="feature-item" bindtap="onFeatureTap" data-feature="content-analysis">
+        <view class="feature-item-left">
+          <text class="feature-icon">📝</text>
+        </view>
+        <view class="feature-item-content">
+          <text class="feature-item-title">农产品市场分析</text>
+          <text class="feature-item-desc">"最新农产品市场价格趋势深度分析"</text>
+        </view>
+        <view class="feature-item-arrow">›</view>
+      </view>
+    </view>
+
+    <!-- 输入框区域 -->
+    <view class="input-section">
+      <scroll-view class="quick-tags-scroll" scroll-x="true" show-scrollbar="false">
+        <view class="quick-tags">
+          <view class="quick-tag" bindtap="onQuickTagTap" data-tag="weather">
+            <text class="tag-icon">️🌤️</text>
+            <text class="tag-text">天气预报</text>
+          </view>
+          <view class="quick-tag" bindtap="onQuickTagTap" data-tag="product-recommend">
+            <text class="tag-icon">📦</text>
+            <text class="tag-text">产品推荐</text>
+          </view>
+          <view class="quick-tag" bindtap="onQuickTagTap" data-tag="price-trend">
+            <text class="tag-icon">📈</text>
+            <text class="tag-text">价格趋势</text>
+          </view>
+          <view class="quick-tag" bindtap="onQuickTagTap" data-tag="loan-consult">
+            <text class="tag-icon">💳</text>
+            <text class="tag-text">贷款咨询</text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="input-wrapper">
+        <view class="voice-btn" bindtap="onVoice">
+          <text class="voice-icon">🎙️</text>
+        </view>
+        <input class="text-input" placeholder="有什么农业问题需要问我吗~" placeholder-class="input-placeholder" bindinput="onInput" value="{{inputValue}}" confirm-type="send" bindconfirm="onSend" />
+        <view class="send-btn" bindtap="onSend">
+          <text class="send-icon"></text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部功能按钮 -->
+    <view class="bottom-actions">
+      <view class="action-btn" bindtap="onCamera">
+        <view class="action-icon-wrapper camera">
+          <text class="action-icon">📷</text>
+        </view>
+        <text class="action-text">拍照识别</text>
+      </view>
+      <view class="action-btn" bindtap="onUploadImage">
+        <view class="action-icon-wrapper image">
+          <text class="action-icon">🖼️</text>
+        </view>
+        <text class="action-text">上传图片</text>
+      </view>
+      <view class="action-btn" bindtap="onUploadFile">
+        <view class="action-icon-wrapper file">
+          <text class="action-icon">📄</text>
+        </view>
+        <text class="action-text">上传文件</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 智能体模式内容 -->
+  <view class="agent-content" wx:if="{{activeTab === 'agent'}}">
+    <view class="agent-list">
+      <view class="agent-item" bindtap="onAgentTap" data-agent="sales">
+        <view class="agent-avatar sales-avatar">
+          <text class="agent-icon">💹</text>
+        </view>
+        <view class="agent-info">
+          <text class="agent-name">销售决策助手</text>
+          <text class="agent-desc">最佳销售时机推荐、定价建议、渠道选择</text>
+        </view>
+      </view>
+
+      <view class="agent-item" bindtap="onAgentTap" data-agent="finance">
+        <view class="agent-avatar finance-avatar">
+          <text class="agent-icon">💰</text>
+        </view>
+        <view class="agent-info">
+          <text class="agent-name">融资管理助手</text>
+          <text class="agent-desc">贷款产品匹配、还款计划查询、额度提醒</text>
+        </view>
+      </view>
+
+      <view class="agent-item" bindtap="onAgentTap" data-agent="risk">
+        <view class="agent-avatar risk-avatar">
+          <text class="agent-icon">️⚠️</text>
+        </view>
+        <view class="agent-info">
+          <text class="agent-name">风险预警助手</text>
+          <text class="agent-desc">价格波动预警、天气灾害提醒</text>
+        </view>
+      </view>
+
+      <view class="agent-item" bindtap="onAgentTap" data-agent="planting">
+        <view class="agent-avatar planting-avatar">
+          <text class="agent-icon">🌾</text>
+        </view>
+        <view class="agent-info">
+          <text class="agent-name">种植规划助手</text>
+          <text class="agent-desc">品种选择建议、种植规模测算</text>
+        </view>
+      </view>
+
+      <view class="agent-item" bindtap="onAgentTap" data-agent="policy">
+        <view class="agent-avatar policy-avatar">
+          <text class="agent-icon">📋</text>
+        </view>
+        <view class="agent-info">
+          <text class="agent-name">政策资讯助手</text>
+          <text class="agent-desc">补贴政策推送、行业动态解读</text>
+        </view>
+      </view>
+
+      <view class="agent-item" bindtap="onAgentTap" data-agent="service">
+        <view class="agent-avatar service-avatar">
+          <text class="agent-icon">👨‍💼</text>
+        </view>
+        <view class="agent-info">
+          <text class="agent-name">智能客服</text>
+          <text class="agent-desc">操作指导、问题转接、7×24小时服务</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

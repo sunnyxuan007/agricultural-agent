@@ -1,0 +1,11 @@
+{
+  "pages": ["pages/chat/chat"],
+  "window": {
+    "navigationBarTitleText": "农信智盾",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f0f8ff"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
